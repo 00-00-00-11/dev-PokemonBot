@@ -1,0 +1,22 @@
+{
+  "name": "pokemonbot",
+  "version": "1.0.0",
+  "description": "A Pokemon bot for discord servers",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CoRe421/PokemonBot.git"
+  },
+  "author": "CoryR",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CoRe421/PokemonBot/issues"
+  },
+  "homepage": "https://github.com/CoRe421/PokemonBot#readme",
+  "dependencies": {
+    "discord.js": "^12.4.0"
+  }
+}
