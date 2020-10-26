@@ -1,5 +1,3 @@
-const { mainModule } = require('process');
-
 module.exports = {
     name: 'blacklist',
     description: 'This blacklists certain channels that the bot cannot read.',

@@ -11,8 +11,16 @@ client.commands = new Discord.Collection();
 
 let messagesSent = 0;
 
-let blacklistedChannels = new Array();
-blacklistedChannels.length = 0;
+let blacklistedChannels = [];
+
+let wildPokemon = [];
+let spawnRate;
+const memberMultiplier = 1;
+const highCurrentMembers = 8;
+
+
+let onlineCount;
+let membersInGuild;
 
 updateBlacklist();
 
@@ -34,6 +42,15 @@ client.on('message', message => {
 
     else if (!message.content.startsWith(prefix)) {
         messagesSent++;
+        updateMessages(message.author.id);
+        membersInGuild = message.guild.members.cache.array();
+        onlineCount = 0;
+        for (let member of membersInGuild) {
+            if ((member.presence.status == 'online') && (!member.user.bot)) {
+                onlineCount++;
+            }
+        }
+        spawnRate = 15 + Math.floor((-1 / 1.5) * onlineCount);
     }
 
     const args = message.content.slice(prefix.length).split(/ +/);
@@ -43,7 +60,7 @@ client.on('message', message => {
         client.commands.get('ping').execute(message, args);
     }
     else if (command == 'catch') {
-        client.commands.get('catch').execute(message, args);
+        client.commands.get('catch').execute(message, args, wildPokemon);
     }
     else if (command == 'help') {
         client.commands.get('help').execute(message, args);
@@ -57,9 +74,12 @@ client.on('message', message => {
     else if (command == 'youmustchoose') {
         client.commands.get('youmustchoose').execute(message, args);
     }
-    if (messagesSent >= 5) {
+    else if (command == 'pokemon') {
+        client.commands.get('pokemon').execute(message, args);
+    }
+    if (messagesSent >= spawnRate) {
         messagesSent = 0;
-        client.commands.get('spawnpokemon').execute(message);
+        client.commands.get('spawnpokemon').execute(message, onlineCount, wildPokemon);
     }
 })
 
@@ -80,6 +100,37 @@ function updateBlacklist() {
                     }
                 }
             }
+        }
+    });
+}
+
+function updateMessages(author) {
+    fs.readFile(`./Players/${author}.txt`, 'utf8', function(err, data) {
+        if (err) return console.log(err);
+        dataLines = data.toString().split("\n");
+        selectedLine = dataLines[0].split(/ +/);
+        messagesLine = dataLines[1].split(/ +/);
+        selectedPokemonLine = dataLines[selectedLine[2]].split(/ +/);;
+        currentMessages = messagesLine[2];
+        currentMessages++;
+        if (currentMessages >= selectedPokemonLine[1] * 2) {
+            let searchStringMessages = 'messages';
+            let searchStringLevel = `${selectedPokemonLine[0]}`;
+            let replaceMessages = new RegExp('^.*' + searchStringMessages + '.*$', 'gm');
+            let formatted = data.replace(replaceMessages, 'messages = 0');
+            let replaceLevel = new RegExp('^.*' + searchStringLevel + '.*$', 'gm');
+            formatted = formatted.replace(replaceLevel, `${selectedPokemonLine[0]}` + " " + `${++selectedPokemonLine[1]}`);
+            fs.writeFile(`./Players/${author}.txt`, formatted, 'utf8', function(err) {
+                if (err) return console.log(err);
+            });
+        }
+        else {
+            let searchString = 'messages';
+            let re = new RegExp('^.*' + searchString + '.*$', 'gm');
+            let formatted = data.replace(re, `messages = ${currentMessages}`);
+            fs.writeFile(`./Players/${author}.txt`, formatted, 'utf8', function(err) {
+                if (err) return console.log(err);
+            });
         }
     });
 }

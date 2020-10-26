@@ -1,7 +1,7 @@
 module.exports = {
     name: 'spawnpokemon',
     description: 'This spawns a pokemon in the Discord channel.',
-    execute(message) {
+    execute(message, onlineCount, wildPokemon) {
         message.channel.send("A wild pokemon has appeared!");
         const fs = require('fs');
         const pokemon = fs.readdirSync('./Pokemon/');
@@ -11,10 +11,17 @@ module.exports = {
 
         let legendChance = Math.random();
         let shinyChance = Math.random();
+        let legendMultiplier;
+        if (onlineCount > 5) {
+            legendMultiplier = onlineCount;
+        }
+        else {
+            legendMultiplier = 0;
+        }
 
         let url;
 
-        if (legendChance < (1 / 200)) {
+        if (legendChance < (1 / (200 - (legendMultiplier * 2)))) {
             if (shinyChance < (1 / 4096)) {
                 let index = Math.floor(Math.random() * pokemonShinyLegendary.length);
                 url = pokemonShinyLegendary[index]
@@ -24,6 +31,7 @@ module.exports = {
                         name: url
                     }]
                 });
+                wildPokemon.push(`./Shiny Legendary Pokemon/${url}`);
             }
             else {
                 let index = Math.floor(Math.random() * pokemonLegendary.length);
@@ -34,6 +42,7 @@ module.exports = {
                         name: url
                     }]
                 });
+                wildPokemon.push(`./Legendary Pokemon/${url}`);
             }
         }
         else {
@@ -46,6 +55,7 @@ module.exports = {
                         name: url
                     }]
                 });
+                wildPokemon.push(`./Shiny Pokemon/${url}`);
             }
             else {
                 let index = Math.floor(Math.random() * pokemon.length);
@@ -56,6 +66,7 @@ module.exports = {
                         name: url
                     }]
                 });
+                wildPokemon.push(`./Pokemon/${url}`);
             }
         }
     }
