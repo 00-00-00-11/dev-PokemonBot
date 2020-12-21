@@ -48,7 +48,7 @@ module.exports = {
                     m.channel.send("Your choice could not be understood. \nPlease try again.");
                 }
             }
-            else if (m.content.toLowerCase() == "p!cancel") {
+            else if (comman == "cancel") {
                 m.channel.send("Process cancelled!");
                 collector.stop();
             }

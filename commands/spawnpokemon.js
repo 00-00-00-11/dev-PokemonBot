@@ -1,19 +1,19 @@
 module.exports = {
     name: 'spawnpokemon',
     description: 'This spawns a pokemon in the Discord channel.',
-    execute(message, onlineCount, wildPokemon) {
+    execute(message, senderCount, wildPokemon) {
         message.channel.send("A wild pokemon has appeared!");
         const fs = require('fs');
         const pokemon = fs.readdirSync('./Pokemon/');
-        const pokemonShiny = fs.readdirSync('./Shiny Pokemon/');
-        const pokemonLegendary = fs.readdirSync('./Legendary Pokemon/');
-        const pokemonShinyLegendary = fs.readdirSync('./Shiny Legendary Pokemon/');
+        const pokemonShiny = fs.readdirSync('./ShinyPokemon/');
+        const pokemonLegendary = fs.readdirSync('./LegendaryPokemon/');
+        const pokemonShinyLegendary = fs.readdirSync('./ShinyLegendaryPokemon/');
 
         let legendChance = Math.random();
         let shinyChance = Math.random();
         let legendMultiplier;
-        if (onlineCount > 5) {
-            legendMultiplier = onlineCount;
+        if (senderCount > 2) {
+            legendMultiplier = senderCount;
         }
         else {
             legendMultiplier = 0;
@@ -21,14 +21,14 @@ module.exports = {
 
         let url;
 
-        if (legendChance < (1 / (200 - (legendMultiplier * 2)))) {
+        if (legendChance < (1 / (200 - (senderCount * 5)))) {
             if (shinyChance < (1 / 4096)) {
                 let index = Math.floor(Math.random() * pokemonShinyLegendary.length);
                 url = pokemonShinyLegendary[index]
                 message.channel.send({
                     files: [{
-                        attachment: `./Shiny Legendary Pokemon/${url}`,
-                        name: url
+                        attachment: "./Shiny Legendary Pokemon/PokebotSpawn",
+                        name: "./Shiny Legendary Pokemon/PokebotSpawn.png"
                     }]
                 });
                 wildPokemon.push(`./Shiny Legendary Pokemon/${url}`);
@@ -39,7 +39,7 @@ module.exports = {
                 message.channel.send({
                     files: [{
                         attachment: `./Legendary Pokemon/${url}`,
-                        name: url
+                        name: "./Legendary Pokemon/PokebotSpawn.png"
                     }]
                 });
                 wildPokemon.push(`./Legendary Pokemon/${url}`);
@@ -52,7 +52,7 @@ module.exports = {
                 message.channel.send({
                     files: [{
                         attachment: `./Shiny Pokemon/${url}`,
-                        name: url
+                        name: "./Shiny Pokemon/PokebotSpawn.png"
                     }]
                 });
                 wildPokemon.push(`./Shiny Pokemon/${url}`);
@@ -63,7 +63,7 @@ module.exports = {
                 message.channel.send({
                     files: [{
                         attachment: `./Pokemon/${url}`,
-                        name: url
+                        name: "./Pokemon/PokebotSpawn.png"
                     }]
                 });
                 wildPokemon.push(`./Pokemon/${url}`);

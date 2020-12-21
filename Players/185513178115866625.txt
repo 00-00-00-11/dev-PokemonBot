@@ -1,0 +1,22 @@
+selected = 2
+messages = 13
+./Pokemon/001bulbasaur.png 23
+./Pokemon/214heracross.png 14 
+./Pokemon/253grovyle.png 66 
+./Pokemon/628braviary.png 77 
+./Pokemon/236tyrogue.png 17 
+./Pokemon/207gligar.png 36 
+./Pokemon/230kingdra.png 20 
+./LegendaryPokemon/486regigigas.png 73 
+./Pokemon/429mismagius.png 40 
+./Pokemon/479rotom-flying.png 42 
+./Pokemon/045vileplume.png 32 
+./Pokemon/295exploud.png 17 
+./Pokemon/389torterra.png 14 
+./Pokemon/162furret.png 21 
+./Pokemon/236tyrogue.png 14 
+./Pokemon/303mawile.png 33 
+./Pokemon/091cloyster.png 15 
+./Pokemon/216teddiursa.png 28 
+./Pokemon/179mareep.png 9 
+./Pokemon/199slowking.png 50 

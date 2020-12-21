@@ -3,7 +3,9 @@ const Discord = require('discord.js');
 
 const client = new Discord.Client();
 
-const prefix = 'p!'
+const config = require('./config.json');
+
+const prefix = config.prefix;
 
 const fs = require('fs');
 
@@ -14,13 +16,16 @@ let messagesSent = 0;
 let blacklistedChannels = [];
 
 let wildPokemon = [];
-let spawnRate;
-const memberMultiplier = 1;
-const highCurrentMembers = 8;
-
-
-let onlineCount;
-let membersInGuild;
+let messageSenders = [];
+const minTimeMinutesBetweenSpawns = 1;
+const maxTimeMinutesBetweenSpawns = 10;
+const lastMessageExpirationTime = 30;
+const activeSenderMultiplier = 3;
+const activeTalkerMultiplier = 1;
+let lastSpawnTime = new Date();
+let lastSentTime = new Date();
+let voiceChannels;
+let inVoiceCount;
 
 updateBlacklist();
 
@@ -39,23 +44,42 @@ client.on('message', message => {
     if ((message.author.bot) || (blacklistedChannels.indexOf(message.channel.id) != -1)) {
         return;
     }
-
     else if (!message.content.startsWith(prefix)) {
-        messagesSent++;
-        updateMessages(message.author.id);
-        membersInGuild = message.guild.members.cache.array();
-        onlineCount = 0;
-        for (let member of membersInGuild) {
-            if ((member.presence.status == 'online') && (!member.user.bot)) {
-                onlineCount++;
+        voiceChannels = message.guild.channels.cache.filter(c => c.type === 'voice');
+        inVoiceCount = 0;
+        for (const [id, voiceChannel] of voiceChannels) {
+            for (member of voiceChannel.members.array()) {
+                if (!(member.user.bot)) {
+                    inVoiceCount++;
+                }
             }
         }
-        spawnRate = 15 + Math.floor((-1 / 1.5) * onlineCount);
-    }
 
+        if (Math.abs(new Date() - lastSpawnTime >= (minTimeMinutesBetweenSpawns * 60 * 1000))) {
+            messagesSent++;
+        }
+        if (Math.abs(new Date() - lastSentTime >= (lastMessageExpirationTime * 60 * 1000))) {
+            messageSenders = [];
+        }
+        if (messageSenders.indexOf(message.author.id) == -1) {
+            messageSenders.push(message.author.id);
+        }
+        lastSentTime = new Date();
+        const playerFiles = fs.readdirSync('./Players/');
+        if (playerFiles.indexOf(message.author.id + ".txt") != -1) {  
+            updateMessages(message.author.id);
+        }
+        let spawnChance = Math.random() - .3;
+        if (((spawnChance  + ((-40 / ((messagesSent + (messageSenders.length * activeSenderMultiplier) + (inVoiceCount * activeTalkerMultiplier)) + 40)) + 1) > 1) || ((Math.abs(new Date() - lastSpawnTime >= (maxTimeMinutesBetweenSpawns * 60 * 1000))) && (messageSenders.length > 2) && (messagesSent > Math.floor(Math.random() * 10)))) && (Math.abs(new Date() - lastSpawnTime >= (minTimeMinutesBetweenSpawns * 60 * 1000)))) {
+            messagesSent = 0;
+            lastSpawnTime = new Date();
+            client.commands.get('spawnpokemon').execute(message, messageSenders.length, wildPokemon);
+        }
+        return;
+    }
     const args = message.content.slice(prefix.length).split(/ +/);
     const command = args.shift().toLowerCase();
-
+    
     if (command === 'ping') {
         client.commands.get('ping').execute(message, args);
     }
@@ -76,10 +100,6 @@ client.on('message', message => {
     }
     else if (command == 'pokemon') {
         client.commands.get('pokemon').execute(message, args);
-    }
-    if (messagesSent >= spawnRate) {
-        messagesSent = 0;
-        client.commands.get('spawnpokemon').execute(message, onlineCount, wildPokemon);
     }
 })
 
@@ -113,7 +133,7 @@ function updateMessages(author) {
         selectedPokemonLine = dataLines[selectedLine[2]].split(/ +/);;
         currentMessages = messagesLine[2];
         currentMessages++;
-        if (currentMessages >= selectedPokemonLine[1] * 2) {
+        if ((selectedPokemonLine[1] < 100) && (currentMessages >= selectedPokemonLine[1] * 2)) {
             let searchStringMessages = 'messages';
             let searchStringLevel = `${selectedPokemonLine[0]}`;
             let replaceMessages = new RegExp('^.*' + searchStringMessages + '.*$', 'gm');
@@ -137,6 +157,6 @@ function updateMessages(author) {
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
-  }
+}
 
-client.login('NzY4OTU1NDU3NDY5NDE1NDg0.X5H_kw.hp53IpQ3QrUbN80J8t96N640LVM');
+client.login(config.token);

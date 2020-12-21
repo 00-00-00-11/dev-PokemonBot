@@ -2,6 +2,10 @@ module.exports = {
     name: 'catch',
     description: 'This command is used to catch pokemon',
     execute(message, args, wildPokemon) {
+        if (args[0] == null) {
+            console.log("Incorrect input");
+            return;
+        }
         const fs = require('fs');
         const playerFiles = fs.readdirSync('./Players/');
         if (playerFiles.indexOf(message.author.id + ".txt") == -1) {
@@ -11,14 +15,15 @@ module.exports = {
         let found = false;
         let pokemonCaught;
         for (let pokemon of wildPokemon) {
-            if (pokemon.indexOf(args[0].toLowerCase()) != -1) {
+            let pokeName = pokemon.substring(pokemon.lastIndexOf("/") + 4, pokemon.length - 4);
+            if (pokeName === args[0].toLowerCase()) {
                 pokemonCaught = pokemon;
-                wildPokemon.pop(pokemon);
+                wildPokemon.splice(wildPokemon.indexOf(pokemon), 1)
                 found = true;
             }
         }
         if (found) {
-            const pokemonLevel = Math.floor(Math.random() * 80);
+            const pokemonLevel = Math.ceil(((Math.random() * 80) * (Math.random() * .5 + .5)));
             message.channel.send(`Congratulations ${message.author}! You caught a level ${pokemonLevel} ${args[0].charAt(0).toUpperCase() + args[0].slice(1)}!`)
             fs.appendFile(`./Players/${message.author.id}.txt`, pokemonCaught + ` ${pokemonLevel} \n`, (err) => {
                 if (err) throw err;

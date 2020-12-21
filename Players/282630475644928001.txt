@@ -1,0 +1,3 @@
+selected = 2
+messages = 4
+./Pokemon/290chimchar.png 3

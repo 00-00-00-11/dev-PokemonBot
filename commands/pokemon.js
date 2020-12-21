@@ -1,3 +1,5 @@
+const { Console } = require('console');
+
 module.exports = {
     name: 'pokemon',
     description: 'This command returns a list of the authors pokemon, in segments if the length is too great.',
@@ -15,7 +17,7 @@ module.exports = {
             let selectedIndexArray = selectedIndexString.split(/ +/);
             let sentMessageArray = []
             sentMessageArray.push("Number: Name, Level\n")
-            for (let i = 2; i < dataLines.length - 2; i++) {
+            for (let i = 2; i < dataLines.length - 1; i++) {
                 lineArray = dataLines[i].split(/ +/);
                 let pokeName = lineArray[0].substring(lineArray[0].lastIndexOf("/") + 4, lineArray[0].length - 4);
                 if (i == selectedIndexArray[2]) {
