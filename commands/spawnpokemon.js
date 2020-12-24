@@ -4,6 +4,7 @@ module.exports = {
     execute(message, senderCount, wildPokemon) {
         message.channel.send("A wild pokemon has appeared!");
         const fs = require('fs');
+        const Discord = require('discord.js');
         const pokemon = fs.readdirSync('./Pokemon/');
         const pokemonShiny = fs.readdirSync('./ShinyPokemon/');
         const pokemonLegendary = fs.readdirSync('./LegendaryPokemon/');
@@ -25,47 +26,67 @@ module.exports = {
             if (shinyChance < (1 / 4096)) {
                 let index = Math.floor(Math.random() * pokemonShinyLegendary.length);
                 url = pokemonShinyLegendary[index]
-                message.channel.send({
-                    files: [{
-                        attachment: "./Shiny Legendary Pokemon/PokebotSpawn",
-                        name: "./Shiny Legendary Pokemon/PokebotSpawn.png"
-                    }]
-                });
-                wildPokemon.push(`./Shiny Legendary Pokemon/${url}`);
+
+                let attachment = new Discord.MessageAttachment(`./ShinyLegendaryPokemon/${url}`, 'PokebotSpawn.png');
+
+                let embed = new Discord.MessageEmbed()
+                    .setTitle("A wild pokémon has appeared!")
+                    .setDescription("Guess the pokémon and type p!catch <pokémon> to catch it!")
+                    .setColor("#4ca87a")
+                    .attachFiles(attachment)
+                    .setImage('attachment://PokebotSpawn.png')
+
+                message.channel.send(embed);
+                wildPokemon.push(`./ShinyLegendaryPokemon/${url}`);
             }
             else {
                 let index = Math.floor(Math.random() * pokemonLegendary.length);
                 url = pokemonLegendary[index]
-                message.channel.send({
-                    files: [{
-                        attachment: `./Legendary Pokemon/${url}`,
-                        name: "./Legendary Pokemon/PokebotSpawn.png"
-                    }]
-                });
-                wildPokemon.push(`./Legendary Pokemon/${url}`);
+
+                let attachment = new Discord.MessageAttachment(`./LegendaryPokemon/${url}`, 'PokebotSpawn.png');
+
+                let embed = new Discord.MessageEmbed()
+                    .setTitle("A wild pokémon has appeared!")
+                    .setDescription("Guess the pokémon and type p!catch <pokémon> to catch it!")
+                    .setColor("#4ca87a")
+                    .attachFiles(attachment)
+                    .setImage('attachment://PokebotSpawn.png')
+
+                message.channel.send(embed);
+                wildPokemon.push(`./LegendaryPokemon/${url}`);
             }
         }
         else {
             if (shinyChance < (1 / 4096)) {
                 let index = Math.floor(Math.random() * pokemonShiny.length);
                 url = pokemonShiny[index]
-                message.channel.send({
-                    files: [{
-                        attachment: `./Shiny Pokemon/${url}`,
-                        name: "./Shiny Pokemon/PokebotSpawn.png"
-                    }]
-                });
-                wildPokemon.push(`./Shiny Pokemon/${url}`);
+
+                let attachment = new Discord.MessageAttachment(`./ShinyPokemon/${url}`, 'PokebotSpawn.png');
+
+                let embed = new Discord.MessageEmbed()
+                    .setTitle("A wild pokémon has appeared!")
+                    .setDescription("Guess the pokémon and type p!catch <pokémon> to catch it!")
+                    .setColor("#4ca87a")
+                    .attachFiles(attachment)
+                    .setImage('attachment://PokebotSpawn.png')
+
+                message.channel.send(embed);
+                wildPokemon.push(`./ShinyPokemon/${url}`);
             }
             else {
                 let index = Math.floor(Math.random() * pokemon.length);
                 url = pokemon[index]
-                message.channel.send({
-                    files: [{
-                        attachment: `./Pokemon/${url}`,
-                        name: "./Pokemon/PokebotSpawn.png"
-                    }]
-                });
+
+                let attachment = new Discord.MessageAttachment(`./Pokemon/${url}`, 'PokebotSpawn.png');
+
+                let embed = new Discord.MessageEmbed()
+                    .setTitle("A wild pokémon has appeared!")
+                    .setDescription("Guess the pokémon and type p!catch <pokémon> to catch it!")
+                    .setColor("#4ca87a")
+                    .attachFiles(attachment)
+                    .setImage('attachment://PokebotSpawn.png')
+
+                message.channel.send(embed);
                 wildPokemon.push(`./Pokemon/${url}`);
             }
         }

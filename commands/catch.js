@@ -6,6 +6,10 @@ module.exports = {
             console.log("Incorrect input");
             return;
         }
+        else if ((args[0].toLowerCase() == 'these' && args[1].toLowerCase() == 'hands') || args[0].toLowerCase() == 'thesehands') {
+            message.channel.send("Very funny jon");
+            return;
+        }
         const fs = require('fs');
         const playerFiles = fs.readdirSync('./Players/');
         if (playerFiles.indexOf(message.author.id + ".txt") == -1) {

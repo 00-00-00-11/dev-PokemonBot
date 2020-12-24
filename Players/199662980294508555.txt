@@ -1,6 +1,6 @@
 selected = 2
-messages = 25
-./Pokemon/393piplup.png 32
+messages = 64
+./Pokemon/393piplup.png 33
 ./Pokemon/497serperior.png 41 
 ./Pokemon/586sawsbuck-spring.png 44 
 ./Pokemon/496servine.png 61 
@@ -62,7 +62,7 @@ messages = 25
 ./Pokemon/552krokorok.png 29 
 ./Pokemon/111rhyhorn.png 5 
 ./Pokemon/339barboach.png 18 
-./Pokemon/393piplup.png 32
+./Pokemon/393piplup.png 33
 ./Pokemon/602tynamo.png 25 
 ./Pokemon/475gallade.png 27 
 ./Pokemon/280ralts.png 59 
@@ -89,3 +89,7 @@ messages = 25
 ./Pokemon/398staraptor.png 36 
 ./Pokemon/317swalot.png 54 
 ./Pokemon/633deino.png 35 
+./Pokemon/370luvdisc.png 38 
+./Pokemon/505watchog.png 20 
+./Pokemon/016pidgey.png 5 
+./Pokemon/497serperior.png 68 

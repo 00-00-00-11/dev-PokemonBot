@@ -17,7 +17,7 @@ module.exports = {
         message.channel.send("Choose your starting pokemon! \nUse the command p!choose [Pokemon-name] to select. \nType p!cancel to quit the process.");
 
         const filter = m => m.author.id === message.author.id;
-        const collector = message.channel.createMessageCollector(filter, { time: 15000 });
+        const collector = message.channel.createMessageCollector(filter, { time: 120000 });
 
         message.channel.send({
             files: [{
@@ -33,7 +33,11 @@ module.exports = {
             console.log(`Collected ${m.content}`);
             const args = m.content.slice(prefix.length).split(/ +/);
             const command = args.shift().toLowerCase();
-            if (command == "choose") {
+            if (command == "choose" && m.author == message.author && m.channel == message.channel) {
+                if (args[0] == null) {
+                    console.log("Incorrect input");
+                    return;
+                }
                 if (starterNames.indexOf(args[0].toLowerCase()) != -1) {
                     m.channel.send(`${args[0].charAt(0).toUpperCase() + args[0].slice(1)} was chosen!`);
                     dataArray = ["selected = 2", "messages = 0", starterIndexes[starterNames.indexOf(args[0].toLowerCase())] + " 1"];
@@ -48,7 +52,7 @@ module.exports = {
                     m.channel.send("Your choice could not be understood. \nPlease try again.");
                 }
             }
-            else if (comman == "cancel") {
+            else if (command == "cancel" && m.author == message.author && m.channel == message.channel) {
                 m.channel.send("Process cancelled!");
                 collector.stop();
             }

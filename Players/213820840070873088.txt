@@ -1,6 +1,6 @@
 selected = 2
-messages = 41
-./Pokemon/007squirtle.png 39
+messages = 6
+./Pokemon/007squirtle.png 40
 ./Pokemon/267beautifly-f.png 4 
 ./Pokemon/454toxicroak.png 56 
 ./Pokemon/428lopunny.png 48 
@@ -94,3 +94,5 @@ messages = 41
 ./Pokemon/460abomasnow.png 5 
 ./Pokemon/023ekans.png 18 
 ./Pokemon/196espeon.png 13 
+./Pokemon/561sigilyph.png 8 
+./Pokemon/022fearow.png 12 

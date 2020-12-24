@@ -1,2 +1,2 @@
-blacklistedchannels = <#453319712575848449> 
+blacklistedchannels = <#453319712575848449> <#790729883789557770> 
 legendarys = 
