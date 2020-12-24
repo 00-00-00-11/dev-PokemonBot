@@ -11,13 +11,6 @@ module.exports = {
 
         let legendChance = Math.random();
         let shinyChance = Math.random();
-        let legendMultiplier;
-        if (senderCount > 2) {
-            legendMultiplier = senderCount;
-        }
-        else {
-            legendMultiplier = 0;
-        }
 
         let url;
 
