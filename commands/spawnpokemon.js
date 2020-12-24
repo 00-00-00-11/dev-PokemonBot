@@ -2,7 +2,6 @@ module.exports = {
     name: 'spawnpokemon',
     description: 'This spawns a pokemon in the Discord channel.',
     execute(message, senderCount, wildPokemon) {
-        message.channel.send("A wild pokemon has appeared!");
         const fs = require('fs');
         const Discord = require('discord.js');
         const pokemon = fs.readdirSync('./Pokemon/');
